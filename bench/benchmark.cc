@@ -144,6 +144,7 @@ BenchmarkClient::CooldownDone()
 void
 BenchmarkClient::SendNext()
 {
+    // Notice("SendNext");
     std::ostringstream msg;
     msg << "request" << n;
 
@@ -157,6 +158,7 @@ BenchmarkClient::SendNext()
 void
 BenchmarkClient::OnReply(const string &request, const string &reply)
 {
+    // Notice("OnReply");
     if (cooldownDone) {
         return;
     }

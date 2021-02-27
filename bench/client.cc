@@ -40,6 +40,7 @@
 #include "unreplicated/client.h"
 #include "vr/client.h"
 #include "nopaxos/client.h"
+#include "bft/client.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -76,7 +77,8 @@ int main(int argc, char **argv)
         PROTO_VR,
         PROTO_FASTPAXOS,
         PROTO_SPEC,
-	PROTO_NOPAXOS
+	    PROTO_NOPAXOS,
+        PROTO_BFT,
     } proto = PROTO_UNKNOWN;
 
     string latencyFile;
@@ -131,8 +133,10 @@ int main(int argc, char **argv)
             } else if (strcasecmp(optarg, "spec") == 0) {
                 proto = PROTO_SPEC;
             } else if (strcasecmp(optarg, "nopaxos") == 0) {
-		proto = PROTO_NOPAXOS;
-	    }
+        		proto = PROTO_NOPAXOS;
+	        } else if (strcasecmp(optarg, "bft") == 0) {
+                proto = PROTO_BFT;
+            }
 	    else {
                 fprintf(stderr, "unknown mode '%s'\n", optarg);
                 Usage(argv[0]);
@@ -246,9 +250,13 @@ int main(int argc, char **argv)
             client = new specpaxos::spec::SpecClient(config, &transport);
             break;
 
-	case PROTO_NOPAXOS:
-	    client = new specpaxos::nopaxos::NOPaxosClient(config, &transport);
-	    break;
+        case PROTO_NOPAXOS:
+            client = new specpaxos::nopaxos::NOPaxosClient(config, &transport);
+            break;
+
+        case PROTO_BFT:
+            client = new specpaxos::bft::BFTClient(config, &transport);
+            break;
 
         default:
             NOT_REACHABLE();

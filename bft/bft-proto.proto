@@ -1,0 +1,12 @@
+import "common/request.proto";
+
+package specpaxos.bft.proto;
+
+message RequestMessage {
+    required specpaxos.Request req = 1;
+}
+
+message ReplyMessage {
+    required bytes reply = 1;
+    required uint64 clientreqid = 2;
+}

@@ -36,6 +36,7 @@
 #include "unreplicated/replica.h"
 #include "vr/replica.h"
 #include "nopaxos/replica.h"
+#include "bft/replica.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -75,7 +76,8 @@ main(int argc, char **argv)
         PROTO_VR,
         PROTO_FASTPAXOS,
         PROTO_SPEC,
-	PROTO_NOPAXOS
+    	PROTO_NOPAXOS,
+        PROTO_BFT
     } proto = PROTO_UNKNOWN;
 
     // Parse arguments
@@ -135,8 +137,10 @@ main(int argc, char **argv)
                 proto = PROTO_FASTPAXOS;
             } else if (strcasecmp(optarg, "spec") == 0) {
                 proto = PROTO_SPEC;
-	    } else if (strcasecmp(optarg, "nopaxos") == 0) {
-		proto = PROTO_NOPAXOS;
+    	    } else if (strcasecmp(optarg, "nopaxos") == 0) {
+	        	proto = PROTO_NOPAXOS;
+            } else if (strcasecmp(optarg, "bft") == 0) {
+                proto = PROTO_BFT;
             } else {
                 fprintf(stderr, "unknown mode '%s'\n", optarg);
                 Usage(argv[0]);
@@ -251,7 +255,11 @@ main(int argc, char **argv)
                                                          !recover,
                                                          &transport,
                                                          nullApp);
-	break;
+	    break;
+
+    case PROTO_BFT:
+        replica = new specpaxos::bft::BFTReplica(config, index, !recover, &transport, nullApp);
+        break;
 
     default:
         NOT_REACHABLE();
