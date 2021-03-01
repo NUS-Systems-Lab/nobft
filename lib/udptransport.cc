@@ -529,6 +529,22 @@ UDPTransport::SendMessageInternal(TransportReceiver *src,
     return _SendMessageInternal(src, dst, m, 0, NULL);
 }
 
+bool UDPTransport::OrderedMulticast2(TransportReceiver *src, const Message &m, void *meta, size_t meta_len) {
+    const specpaxos::Configuration *cfg = configurations[src];
+    ASSERT(cfg != NULL);
+
+    if (!replicaAddressesInitialized) {
+        LookupAddresses();
+    }
+
+    auto kv = multicastAddresses.find(cfg);
+    if (kv == multicastAddresses.end()) {
+        Panic("Configuration has no multicast address...");
+    }
+    return _SendMessageInternal(src, kv->second, m, meta_len, meta);
+}
+
+
 bool
 UDPTransport::OrderedMulticast(TransportReceiver *src,
                                const std::vector<int> &groups,

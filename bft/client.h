@@ -4,8 +4,10 @@
 #define _BFT_CLIENT_H
 
 #include "common/client.h"
+#include "common/quorumset.h"
 #include "lib/configuration.h"
 #include "lib/message.h"
+#include <map>
 
 namespace specpaxos {
 namespace bft {
@@ -29,7 +31,10 @@ public:
 private:
   string req;
   continuation_t cont;
-  uint64_t req_id;
+  uint64_t reqid;
+  // tried but the abstraction is shit
+  // QuorumSet<uint64_t, proto::ReplyMessage> quorum;
+  int count;
 };
 
 } // namespace bft

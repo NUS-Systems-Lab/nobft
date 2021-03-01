@@ -194,6 +194,17 @@ public:
         Panic("Transport implementation does not support OrderedMulticast");
     }
 
+    virtual bool OrderedMulticast2(TransportReceiver *src, const Message &m, void *meta, size_t meta_len) {
+        Panic("OrderedMulticast2 not implemented");
+    }
+
+    virtual bool SendMessage2(TransportReceiver *src,
+                             const TransportAddress &dst,
+                             const Message &m, void *meta, size_t meta_len) 
+    {
+        Panic("SendMessage2 not implemented");
+    }
+
     virtual bool
     OrderedMulticast(TransportReceiver *src,
                      const Message &m) override

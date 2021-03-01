@@ -76,6 +76,13 @@ public:
     virtual bool OrderedMulticast(TransportReceiver *src,
                                   const std::vector<int> &groups,
                                   const Message &m) override;
+    virtual bool OrderedMulticast2(TransportReceiver *src, const Message &m, void *meta, size_t meta_len) override;
+    virtual bool SendMessage2(TransportReceiver *src,
+                             const TransportAddress &dst,
+                             const Message &m, void *meta, size_t meta_len) override 
+    {
+        return _SendMessageInternal(src, dynamic_cast<const UDPTransportAddress &>(dst), m, meta_len, meta);
+    }
     void Run() override;
     void Stop() override;
     int Timer(uint64_t ms, timer_callback_t cb) override;

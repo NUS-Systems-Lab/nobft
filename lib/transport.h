@@ -119,6 +119,11 @@ public:
     /* Send ordered multicast to the default group */
     virtual bool OrderedMulticast(TransportReceiver *src,
                                   const Message &m) = 0;
+
+    virtual bool OrderedMulticast2(TransportReceiver *src, const Message &m, void *meta, size_t meta_len) = 0;
+    virtual bool SendMessage2(TransportReceiver *src,
+                             const TransportAddress &dst,
+                             const Message &m, void *meta, size_t meta_len) = 0;
     /* Send message to failure coordinator
      */
     virtual bool SendMessageToFC(TransportReceiver *src,
